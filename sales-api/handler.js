@@ -36,11 +36,35 @@ app.post("/checkout", connectDb, async (req, res, next) => {
     }
     else {
       await req.conn.end()
+
+      const now = new Date().toString()
+      const message = `도너츠 재고가 없습니다. 제품을 생산해주세요! \n메시지 작성 시각: ${now}`
+      const params = {
+        Message: message,
+        Subject: '도너츠 재고 부족',
+        MessageAttributes: {
+          MessageAttributeProductId: {
+            StringValue: product.product_id,
+            DataType: "String",
+          },
+          MessageAttributeFactoryId: {
+            StringValue: req.body.MessageAttributeFactoryId,
+            DataType: "String",
+          },
+        },
+        TopicArn: process.env.TOPIC_ARN
+      }
+  
+      const result = await sns.publish(params).promise()
+      console.log(result)
+  
       return res.status(200).json({ message: `구매 실패! 남은 재고: ${product.stock}`});
     }
   } else {
     await req.conn.end()
+
     return res.status(400).json({ message: "상품 없음" });
+
   }
 });
 

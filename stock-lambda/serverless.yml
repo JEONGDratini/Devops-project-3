@@ -1,0 +1,17 @@
+service: stock-lambda
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: ap-northeast-2
+  runtime: nodejs18.x
+
+functions:
+  producer:
+    handler: index.consumer
+    events:
+      - sqs:
+          arn: arn:aws:sqs:ap-northeast-2:503424096631:stock_queue
+
+plugins:
+  - serverless-lift
