@@ -5,31 +5,31 @@
 - SQS에 들어온 메세지를 레거시 시스템(Factory API)으로 전달하는 시스템을 구성한다
 - 레거시 시스템(Factory API)의 콜백 대상이되는 리소스를 생성해 데이터베이스에 접근 할 수 있게 한다
 
-## Step 1 : Lambda 서버(Sales API) - DB 연결
+### Step 1 : Lambda 서버(Sales API) - DB 연결
 
 ![step1](https://contents-img-jeonghun.s3.ap-northeast-2.amazonaws.com/project3/project3-project-step1.png)
 
 > **✅ 확인 포인트: 요청시 재고 감소 로그 / 재고 0 도달 → 재고없음 로그**
 
-## Step 2 : “재고없음” 메세지 전달 시스템 구성
+### Step 2 : “재고없음” 메세지 전달 시스템 구성
 ![step2](https://contents-img-jeonghun.s3.ap-northeast-2.amazonaws.com/project3/project3-project-step2.png)
 
 > **✅ 확인 포인트 : 재고가 없는 경우 stock_queue에 메세지가 들어온 것을 확인**
 
-## Step 3 : 메세지를 레거시 시스템(Factory API)로 보내줄 Lambda 구성 및 DLQ 추가
+### Step 3 : 메세지를 레거시 시스템(Factory API)로 보내줄 Lambda 구성 및 DLQ 추가
 ![step3](https://contents-img-jeonghun.s3.ap-northeast-2.amazonaws.com/project3/project3-project-step3.png)
 
 > **✅ 확인 포인트 : stock_queue에서 메세지 사라짐, stock_lambda에서 생성된 로그 확인**
 
-## Step 4 : 데이터베이스의 재고를 증가시키는 Lambda 함수 생성
+### Step 4 : 데이터베이스의 재고를 증가시키는 Lambda 함수 생성
 
 ![image](https://github.com/JEONGDratini/Devops-project-3/assets/62793534/bb3be8a0-1125-46c6-bf4a-be63dc82269d)
 
 > **✅ 확인 포인트 : 재고 없음 메세지 전송 → 일정 시간 이후 다시 요청시 재고감소 작동**
 
-## Step 5 : 추가 시나리오에 대한 아키텍처 구성
+### Step 5 : 추가 시나리오에 대한 아키텍처 구성
 
-# a. 광고 중단 요청 진행 시나리오
+## a. 광고 중단 요청 진행 시나리오
 
 > 재고가 없는 상황에서도 광고가 계속 진행되고 있습니다. 광고 비용 절감과 고객불만을 낮추기 위한 조치가 필요합니다. 메시지가 유실되는 상황을 막기 위해 내구성을 갖춘 시스템이 필요합니다.
 
@@ -38,7 +38,7 @@
     -   메시지에 대한 내구성을 강화하기 위해 메시지 Queue가 사용되어야 합니다.
     -   AWS SES 서비스를 이용해서 이메일을 전송해야 합니다.
 
-# b. VIP 고객관리 프로세스 추가 시나리오
+## b. VIP 고객관리 프로세스 추가 시나리오
 
 > 모니터링 결과 대량 주문을 하는 일부 고객들이 확인되었습니다. 대량 구매 고객들의 사용자 정보를 식별할 수 있어야 합니다. 고객정보는 별도의 서버(EC2)와 데이터베이스(RDS)에서 관리되고 있습니다. 데이터베이스 기록과 외부 마케팅 시스템으로의 연결과정의 오류를 대비하기 위한 내구성 갖춘 시스템이 필요합니다.
 
