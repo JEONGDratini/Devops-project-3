@@ -23,6 +23,6 @@
 
 ## Step 4 : 데이터베이스의 재고를 증가시키는 Lambda 함수 생성
 
-_(최종 아키텍처 다이어그램은 직접 그려서 제출해야 합니다. `diagram.png` 와 같이 파일을 추가하세요.)_
+![image](https://github.com/JEONGDratini/Devops-project-3/assets/62793534/fdaaf2ca-873e-4877-95f0-493a02c352fb)
 
 > **✅ 확인 포인트 : 재고 없음 메세지 전송 → 일정 시간 이후 다시 요청시 재고감소 작동**
